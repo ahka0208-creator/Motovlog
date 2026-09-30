@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>MotoVlog 裝備與企劃中心</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --card-bg: #1e1e1e;
+      --text-main: #ffffff;
+      --text-sub: #a0a0a0;
+      --accent: #e63946; /* Honda 經典紅 */
+      --accent-hover: #d62828;
+      --success: #2a9d8f;
+      --border: #333333;
+    }
+    
+    * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent;}
+    
+    body {
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text-main);
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 600px;
+      padding-bottom: 40px;
+    }
+
+    .header { text-align: center; margin-bottom: 25px; }
+    .header h1 { font-size: 28px; margin: 0 0 5px 0; color: var(--text-main); letter-spacing: 2px; }
+    .header h1 span { color: var(--accent); }
+    .header p { margin: 0; color: var(--text-sub); font-size: 14px; }
+
+    /* 區塊卡片 */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--text-main);
+      margin: 0 0 15px 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+    }
+    
+    .section-title i { font-style: normal; font-size: 20px; }
+
+    /* 清單樣式 */
+    .check-list { display: flex; flex-direction: column; gap: 12px; }
+    .check-item {
+      display: flex; align-items: center; gap: 15px;
+      background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 10px;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .check-item:active { background: rgba(255,255,255,0.1); }
+    
+    .check-box {
+      width: 24px; height: 24px; border: 2px solid var(--text-sub); border-radius: 6px;
+      display: flex; justify-content: center; align-items: center; transition: all 0.2s;
+    }
+    .check-item.checked .check-box { background: var(--success); border-color: var(--success); }
+    .check-item.checked .check-box::after { content: "✓"; color: white; font-weight: bold; }
+    .check-item.checked .check-text { color: var(--text-sub); text-decoration: line-through; }
+    
+    .check-text { font-size: 16px; color: var(--text-main); transition: all 0.2s; }
+    .check-sub { font-size: 12px; color: var(--text-sub); display: block; margin-top: 4px; text-decoration: none !important;}
+
+    /* 靈感生成器 */
+    .idea-box {
+      background: #111; border: 1px dashed var(--accent); border-radius: 12px;
+      padding: 20px; text-align: center; margin-bottom: 15px; min-height: 160px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .idea-title { font-size: 20px; font-weight: bold; margin: 0 0 10px 0; color: var(--accent); }
+    .idea-desc { font-size: 14px; color: var(--text-sub); line-height: 1.5; margin: 0 0 15px 0;}
+    .idea-angle { font-size: 13px; background: rgba(230, 57, 70, 0.15); color: #ff6b6b; padding: 6px 12px; border-radius: 20px; display: inline-block; }
+
+    .btn-primary {
+      background: var(--accent); color: white; border: none; width: 100%; padding: 15px;
+      font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary:active { transform: scale(0.97); background: var(--accent-hover); }
+    
+    /* 重置按鈕 */
+    .reset-btn {
+      background: transparent; border: 1px solid var(--text-sub); color: var(--text-sub);
+      width: 100%; padding: 10px; border-radius: 8px; margin-top: 15px; cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  
+  <div class="header">
+    <h1>MotoVlog <span>Center</span></h1>
+    <p>Ride Safe. Record Everything.</p>
+  </div>
+
+  <!-- 模塊 1：出車裝備清單 -->
+  <div class="section-card">
+    <h2 class="section-title"><i>🎒</i> 出車防甩漏清單</h2>
+    <div class="check-list" id="gear-list">
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div>
+          <span class="check-text">Insta360 X4 主機與電池</span>
+          <span class="check-sub">確保電量充足，鏡頭無指紋</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div>
+          <span class="check-text">MicroSD 卡</span>
+          <span class="check-sub">確認已插入並格式化為 exFAT</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div>
+          <span class="check-text">Shoei X-15 頭盔</span>
+          <span class="check-sub">檢查下巴支架 (Chin Mount) 穩固度</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div>
+          <span class="check-text">收音咪與防風毛罩</span>
+          <span class="check-sub">Type-C 轉換線是否帶齊</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div>
+          <span class="check-text">Rebel 500 P牌</span>
+          <span class="check-sub">前後 P 牌穩固，無遮擋</span>
+        </div>
+      </div>
+      <div class="check-item" onclick="toggleCheck(this)">
+        <div class="check-box"></div>
+        <div>
+          <span class="check-text">隱形自拍桿 / 擴充架</span>
+          <span class="check-sub">檢查螺絲是否上緊，避免行車震甩</span>
+        </div>
+      </div>
+    </div>
+    <button class="reset-btn" onclick="resetChecklist()">一鍵重置清單</button>
+  </div>
+
+  <!-- 模塊 2：拍攝靈感產生器 -->
+  <div class="section-card">
+    <h2 class="section-title"><i>🎬</i> 拍攝企劃扭蛋機</h2>
+    
+    <div class="idea-box" id="idea-display">
+      <div style="color: #666; padding: 20px;">點擊下方按鈕，抽取今日拍攝靈感</div>
+    </div>
+    
+    <button class="btn-primary" onclick="generateIdea()">🎲 抽取拍攝主題</button>
+  </div>
+
+  <!-- 模塊 3：戰車狀態簡報 -->
+  <div class="section-card">
+    <h2 class="section-title"><i>🏍️</i> Rebel 500 狀態備忘</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+      <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center;">
+        <div style="color: var(--text-sub); font-size: 13px; margin-bottom: 5px;">前後胎氣</div>
+        <div style="font-size: 18px; font-weight: bold; color: var(--success);">正常</div>
+      </div>
+      <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center;">
+        <div style="color: var(--text-sub); font-size: 13px; margin-bottom: 5px;">洗車與洗鏈條</div>
+        <div style="font-size: 18px; font-weight: bold; color: var(--accent);">需安排</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // Checklist 點擊效果
+  function toggleCheck(element) {
+    element.classList.toggle('checked');
+  }
+
+  function resetChecklist() {
+    const items = document.querySelectorAll('.check-item');
+    items.forEach(item => item.classList.remove('checked'));
+  }
+
+  // Vlog 靈感資料庫
+  const vlogIdeas = [
+    {
+      title: "純粹沉浸：香港街道 ASMR",
+      desc: "完全不說話，重點記錄 Rebel 500 雙缸引擎的排氣聲浪與香港獨特的霓虹街景。後期剪輯時可加強環境音，非常適合短影音平台。",
+      angle: "🎥 建議機位：Shoei 下巴第一人稱視角"
+    },
+    {
+      title: "P牌日常：新手上路實錄",
+      desc: "記錄掛 P 牌在市區穿梭的挑戰，分享防衛性駕駛心得或常遇見的交通盲點。真實且貼地，容易引起本地車友共鳴。",
+      angle: "🎥 建議機位：車把擴充架 360 度第三人稱跟隨"
+    },
+    {
+      title: "改裝探討：排氣喉聲浪實測",
+      desc: "靜態展示 Rebel 500 的改裝細節（如 Coffman's / Two Brothers 排氣喉），並在安全路段實測不同轉速下的聲浪變化。",
+      angle: "🎥 建議機位：定點腳架 + 行進間車尾低炒視角"
+    },
+    {
+      title: "假日遊車河：遠離繁囂路線",
+      desc: "挑選一條香港郊區路線（如鹿頸、大帽山），配合輕鬆的背景音樂，結合自言自語的內心獨白，打造 Chill 氛圍的 VLOG。",
+      angle: "🎥 建議機位：下巴視角 + 休息時的手持全景"
+    },
+    {
+      title: "維護日常：Rebel 500 保養教學",
+      desc: "拍攝自己檢查胎氣、清潔/上油鏈條的過程。這類實用型教學影片有極高的長尾流量，能持續帶來穩定觀看數。",
+      angle: "🎥 建議機位：定點腳架特寫 + 廣角縮時攝影"
+    }
+  ];
+
+  // 隨機抽取靈感
+  function generateIdea() {
+    const display = document.getElementById('idea-display');
+    const randomIdea = vlogIdeas[Math.floor(Math.random() * vlogIdeas.length)];
+    
+    display.innerHTML = `
+      <div class="idea-title">${randomIdea.title}</div>
+      <div class="idea-desc">${randomIdea.desc}</div>
+      <div><span class="idea-angle">${randomIdea.angle}</span></div>
+    `;
+    
+    // 簡單動畫效果
+    display.style.opacity = 0;
+    setTimeout(() => { display.style.opacity = 1; display.style.transition = "opacity 0.3s"; }, 50);
+  }
+</script>
+
+</body>
+</html>
