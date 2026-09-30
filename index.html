@@ -3,109 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>MotoVlog 裝備與企劃中心</title>
+  <title>MotoVlog 企劃扭蛋機</title>
   <style>
     :root {
-      --bg-color: #121212;
-      --card-bg: #1e1e1e;
+      --bg-color: #0f0f13;
+      --card-bg: #1a1a20;
       --text-main: #ffffff;
-      --text-sub: #a0a0a0;
-      --accent: #e63946; /* Honda 經典紅 */
-      --accent-hover: #d62828;
-      --success: #2a9d8f;
-      --border: #333333;
+      --text-sub: #8e8e93;
+      --accent: #ff3333; /* Honda Red */
+      --accent-glow: rgba(255, 51, 51, 0.2);
+      --tag-bg: #2c2c35;
     }
     
     * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent;}
     
     body {
       background-color: var(--bg-color);
+      background-image: radial-gradient(circle at 50% 0%, var(--accent-glow) 0%, transparent 50%);
       margin: 0;
       padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
       min-height: 100vh;
       color: var(--text-main);
     }
 
     .app-container {
       width: 100%;
-      max-width: 600px;
-      padding-bottom: 40px;
+      max-width: 500px;
     }
 
-    .header { text-align: center; margin-bottom: 25px; }
-    .header h1 { font-size: 28px; margin: 0 0 5px 0; color: var(--text-main); letter-spacing: 2px; }
+    .header { text-align: center; margin-bottom: 30px; }
+    .header h1 { font-size: 32px; margin: 0 0 5px 0; font-weight: 800; letter-spacing: 1px; }
     .header h1 span { color: var(--accent); }
-    .header p { margin: 0; color: var(--text-sub); font-size: 14px; }
+    .header p { margin: 0; color: var(--text-sub); font-size: 15px; }
 
-    /* 區塊卡片 */
-    .section-card {
+    /* 扭蛋機展示區 */
+    .gacha-machine {
       background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
+      border: 1px solid #333;
+      border-radius: 24px;
+      padding: 30px 25px;
+      text-align: center;
       margin-bottom: 25px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
-    }
-
-    .section-title {
-      font-size: 18px;
-      font-weight: bold;
-      color: var(--text-main);
-      margin: 0 0 15px 0;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      min-height: 320px;
       display: flex;
-      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 頂部裝飾線 */
+    .gacha-machine::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px;
+      background: var(--accent);
+    }
+
+    .tags { display: flex; justify-content: center; gap: 8px; margin-bottom: 15px; flex-wrap: wrap; }
+    .tag { background: var(--tag-bg); color: #ccc; font-size: 12px; padding: 5px 12px; border-radius: 20px; letter-spacing: 1px; }
+
+    .idea-title { font-size: 24px; font-weight: bold; margin: 0 0 15px 0; line-height: 1.3; }
+    .idea-desc { font-size: 15px; color: #a1a1aa; line-height: 1.6; margin: 0 0 20px 0; text-align: justify; }
+    
+    .idea-angle {
+      background: rgba(255, 51, 51, 0.1);
+      border: 1px solid rgba(255, 51, 51, 0.3);
+      color: #ff6b6b;
+      padding: 12px 15px;
+      border-radius: 12px;
+      font-size: 14px;
+      display: flex;
+      align-items: flex-start;
       gap: 10px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 10px;
-    }
-    
-    .section-title i { font-style: normal; font-size: 20px; }
-
-    /* 清單樣式 */
-    .check-list { display: flex; flex-direction: column; gap: 12px; }
-    .check-item {
-      display: flex; align-items: center; gap: 15px;
-      background: rgba(255,255,255,0.05); padding: 12px 15px; border-radius: 10px;
-      cursor: pointer; transition: background 0.2s;
-    }
-    .check-item:active { background: rgba(255,255,255,0.1); }
-    
-    .check-box {
-      width: 24px; height: 24px; border: 2px solid var(--text-sub); border-radius: 6px;
-      display: flex; justify-content: center; align-items: center; transition: all 0.2s;
-    }
-    .check-item.checked .check-box { background: var(--success); border-color: var(--success); }
-    .check-item.checked .check-box::after { content: "✓"; color: white; font-weight: bold; }
-    .check-item.checked .check-text { color: var(--text-sub); text-decoration: line-through; }
-    
-    .check-text { font-size: 16px; color: var(--text-main); transition: all 0.2s; }
-    .check-sub { font-size: 12px; color: var(--text-sub); display: block; margin-top: 4px; text-decoration: none !important;}
-
-    /* 靈感生成器 */
-    .idea-box {
-      background: #111; border: 1px dashed var(--accent); border-radius: 12px;
-      padding: 20px; text-align: center; margin-bottom: 15px; min-height: 160px;
-      display: flex; flex-direction: column; justify-content: center;
-    }
-    .idea-title { font-size: 20px; font-weight: bold; margin: 0 0 10px 0; color: var(--accent); }
-    .idea-desc { font-size: 14px; color: var(--text-sub); line-height: 1.5; margin: 0 0 15px 0;}
-    .idea-angle { font-size: 13px; background: rgba(230, 57, 70, 0.15); color: #ff6b6b; padding: 6px 12px; border-radius: 20px; display: inline-block; }
-
-    .btn-primary {
-      background: var(--accent); color: white; border: none; width: 100%; padding: 15px;
-      font-size: 16px; font-weight: bold; border-radius: 10px; cursor: pointer; transition: all 0.2s;
-    }
-    .btn-primary:active { transform: scale(0.97); background: var(--accent-hover); }
-    
-    /* 重置按鈕 */
-    .reset-btn {
-      background: transparent; border: 1px solid var(--text-sub); color: var(--text-sub);
-      width: 100%; padding: 10px; border-radius: 8px; margin-top: 15px; cursor: pointer;
+      text-align: left;
     }
 
+    .generate-btn {
+      background: var(--accent); color: white; border: none; width: 100%; padding: 18px;
+      font-size: 18px; font-weight: bold; border-radius: 16px; cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 10px 20px var(--accent-glow);
+    }
+    .generate-btn:active { transform: scale(0.96); box-shadow: none; }
+
+    /* 動畫效果 */
+    .shake { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-1px, 0, 0); }
+      20%, 80% { transform: translate3d(2px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+      40%, 60% { transform: translate3d(4px, 0, 0); }
+    }
+    
+    .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 初始狀態提示 */
+    .initial-state { color: #555; font-size: 60px; margin-bottom: 15px; }
   </style>
 </head>
 <body>
@@ -113,142 +113,119 @@
 <div class="app-container">
   
   <div class="header">
-    <h1>MotoVlog <span>Center</span></h1>
-    <p>Ride Safe. Record Everything.</p>
+    <h1>MotoVlog <span>企劃扭蛋機</span></h1>
+    <p>專屬車頭 360 機位 · 一鍵抽取拍攝靈感</p>
   </div>
 
-  <!-- 模塊 1：出車裝備清單 -->
-  <div class="section-card">
-    <h2 class="section-title"><i>🎒</i> 出車防甩漏清單</h2>
-    <div class="check-list" id="gear-list">
-      <div class="check-item" onclick="toggleCheck(this)">
-        <div class="check-box"></div>
-        <div>
-          <span class="check-text">Insta360 X4 主機與電池</span>
-          <span class="check-sub">確保電量充足，鏡頭無指紋</span>
-        </div>
-      </div>
-      <div class="check-item" onclick="toggleCheck(this)">
-        <div class="check-box"></div>
-        <div>
-          <span class="check-text">MicroSD 卡</span>
-          <span class="check-sub">確認已插入並格式化為 exFAT</span>
-        </div>
-      </div>
-      <div class="check-item" onclick="toggleCheck(this)">
-        <div class="check-box"></div>
-        <div>
-          <span class="check-text">Shoei X-15 頭盔</span>
-          <span class="check-sub">檢查下巴支架 (Chin Mount) 穩固度</span>
-        </div>
-      </div>
-      <div class="check-item" onclick="toggleCheck(this)">
-        <div class="check-box"></div>
-        <div>
-          <span class="check-text">收音咪與防風毛罩</span>
-          <span class="check-sub">Type-C 轉換線是否帶齊</span>
-        </div>
-      </div>
-      <div class="check-item" onclick="toggleCheck(this)">
-        <div class="check-box"></div>
-        <div>
-          <span class="check-text">Rebel 500 P牌</span>
-          <span class="check-sub">前後 P 牌穩固，無遮擋</span>
-        </div>
-      </div>
-      <div class="check-item" onclick="toggleCheck(this)">
-        <div class="check-box"></div>
-        <div>
-          <span class="check-text">隱形自拍桿 / 擴充架</span>
-          <span class="check-sub">檢查螺絲是否上緊，避免行車震甩</span>
-        </div>
-      </div>
-    </div>
-    <button class="reset-btn" onclick="resetChecklist()">一鍵重置清單</button>
+  <div class="gacha-machine" id="display-area">
+    <div class="initial-state">🎲</div>
+    <div style="color: var(--text-sub); font-size: 16px;">點擊下方按鈕<br>抽取今日專屬的拍攝企劃</div>
   </div>
-
-  <!-- 模塊 2：拍攝靈感產生器 -->
-  <div class="section-card">
-    <h2 class="section-title"><i>🎬</i> 拍攝企劃扭蛋機</h2>
-    
-    <div class="idea-box" id="idea-display">
-      <div style="color: #666; padding: 20px;">點擊下方按鈕，抽取今日拍攝靈感</div>
-    </div>
-    
-    <button class="btn-primary" onclick="generateIdea()">🎲 抽取拍攝主題</button>
-  </div>
-
-  <!-- 模塊 3：戰車狀態簡報 -->
-  <div class="section-card">
-    <h2 class="section-title"><i>🏍️</i> Rebel 500 狀態備忘</h2>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-      <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center;">
-        <div style="color: var(--text-sub); font-size: 13px; margin-bottom: 5px;">前後胎氣</div>
-        <div style="font-size: 18px; font-weight: bold; color: var(--success);">正常</div>
-      </div>
-      <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; text-align: center;">
-        <div style="color: var(--text-sub); font-size: 13px; margin-bottom: 5px;">洗車與洗鏈條</div>
-        <div style="font-size: 18px; font-weight: bold; color: var(--accent);">需安排</div>
-      </div>
-    </div>
-  </div>
+  
+  <button class="generate-btn" onclick="rollIdea()">抽取拍攝主題</button>
 
 </div>
 
 <script>
-  // Checklist 點擊效果
-  function toggleCheck(element) {
-    element.classList.toggle('checked');
-  }
-
-  function resetChecklist() {
-    const items = document.querySelectorAll('.check-item');
-    items.forEach(item => item.classList.remove('checked'));
-  }
-
-  // Vlog 靈感資料庫
-  const vlogIdeas = [
+  // 專為「車頭相機架 + 360相機」度身訂造的拍攝主題庫
+  const ideas = [
     {
-      title: "純粹沉浸：香港街道 ASMR",
-      desc: "完全不說話，重點記錄 Rebel 500 雙缸引擎的排氣聲浪與香港獨特的霓虹街景。後期剪輯時可加強環境音，非常適合短影音平台。",
-      angle: "🎥 建議機位：Shoei 下巴第一人稱視角"
+      tags: ["#P牌日常", "#對話Vlog"],
+      title: "P牌上路：新手內心獨白",
+      desc: "一邊騎車一邊分享今天遇到的路況、P牌的壓力或駕駛心得。真誠的碎碎念最容易引起本地車友共鳴。",
+      angle: "🎥 360 後期取景：將視角 100% 轉向自己（騎士視角），營造面對面聊天的親切感。"
     },
     {
-      title: "P牌日常：新手上路實錄",
-      desc: "記錄掛 P 牌在市區穿梭的挑戰，分享防衛性駕駛心得或常遇見的交通盲點。真實且貼地，容易引起本地車友共鳴。",
-      angle: "🎥 建議機位：車把擴充架 360 度第三人稱跟隨"
+      tags: ["#ASMR", "#排氣聲浪"],
+      title: "隧道狂想曲：Rebel 500 聲浪",
+      desc: "不加任何背景音樂，純粹紀錄 Rebel 500 在不同隧道內的排氣聲與迴音。這類 ASMR 影片在國外有極高的長尾流量。",
+      angle: "🎥 360 後期取景：視角朝前看路，使用超廣角 (Ultra Wide)，讓畫面有極強的速度感。"
     },
     {
-      title: "改裝探討：排氣喉聲浪實測",
-      desc: "靜態展示 Rebel 500 的改裝細節（如 Coffman's / Two Brothers 排氣喉），並在安全路段實測不同轉速下的聲浪變化。",
-      angle: "🎥 建議機位：定點腳架 + 行進間車尾低炒視角"
+      tags: ["#視覺衝擊", "#Insta360專屬"],
+      title: "小行星模式：穿梭都市叢林",
+      desc: "利用 Insta360 獨有的視覺效果，在經過高樓大廈密集區（如旺角、中環）時，將畫面變成一顆滾動的星球。",
+      angle: "🎥 360 後期取景：在 App 內選擇「小行星 (Tiny Planet)」特效，相機固定車頭即可完美達成。"
     },
     {
-      title: "假日遊車河：遠離繁囂路線",
-      desc: "挑選一條香港郊區路線（如鹿頸、大帽山），配合輕鬆的背景音樂，結合自言自語的內心獨白，打造 Chill 氛圍的 VLOG。",
-      angle: "🎥 建議機位：下巴視角 + 休息時的手持全景"
+      tags: ["#KeeTa日常", "#縮時攝影"],
+      title: "外賣車手 Hustle 日常 (TimeShift)",
+      desc: "紀錄連續接單、穿梭橫街窄巷的過程。將長達 30 分鐘的騎乘過程，後期加速成 1 分鐘的快節奏短片。",
+      angle: "🎥 360 後期取景：視角朝前，在 Insta360 App 使用 TimeShift 功能加速，畫面會極度平穩流暢。"
     },
     {
-      title: "維護日常：Rebel 500 保養教學",
-      desc: "拍攝自己檢查胎氣、清潔/上油鏈條的過程。這類實用型教學影片有極高的長尾流量，能持續帶來穩定觀看數。",
-      angle: "🎥 建議機位：定點腳架特寫 + 廣角縮時攝影"
+      tags: ["#夜間騎乘", "#Cyberpunk"],
+      title: "香港夜遊：霓虹燈下的巡航",
+      desc: "在晚間挑選招牌密集的街道慢騎。Rebel 500 的街車風格配上香港夜景，自帶濃厚的 Cyberpunk 電影感。",
+      angle: "🎥 360 後期取景：視角朝前，可開啟低光防震模式，稍微拉慢快門營造車燈的光軌感。"
+    },
+    {
+      tags: ["#防衛駕駛", "#實用教學"],
+      title: "車Cam實錄：香港地獄路況",
+      desc: "剪輯日常騎乘遇到的突發狀況（如小巴硬cut、盲毛過馬路），並用語音事後配音，分析如何預判危險。",
+      angle: "🎥 360 後期取景：視角鎖定正前方，遇到突發狀況時，利用關鍵幀 (Keyframe) 放大焦點。"
+    },
+    {
+      tags: ["#靜態展示", "#改裝分享"],
+      title: "愛車特寫：排氣喉與外觀改裝",
+      desc: "將車停泊在風景優美的地方，針對你的改裝件（如 Coffman's / Two Brothers 喉）進行解說，不一定要邊騎邊拍。",
+      angle: "🎥 建議機位：將相機連自拍桿從車頭架拆下，手持圍繞車身走一圈，後期做平滑運鏡。"
+    },
+    {
+      tags: ["#互動遊戲", "#短影音"],
+      title: "第一視角：你會點樣行？",
+      desc: "在複雜路口或迴旋處前暫停畫面，拋出問題問觀眾「如果是你，你會選哪條線？」，增加 Shorts/Reels 的留言互動率。",
+      angle: "🎥 360 後期取景：標準向前視角，配合剪輯軟體加上大字體問句與倒數計時。"
+    },
+    {
+      tags: ["#風景打卡", "#假日遊車河"],
+      title: "遠離市區：尋找隱世靚景",
+      desc: "紀錄探索大帽山、鹿頸或新界偏遠路段的過程。主打慢節奏、放鬆的心情，配上 Chill 氛圍的 Lo-Fi 音樂。",
+      angle: "🎥 360 後期取景：利用「自由視角 (FreeCapture)」在風景與騎士之間來回切換運鏡。"
+    },
+    {
+      tags: ["#多視角", "#剪輯技巧"],
+      title: "一人多機位：分屏對比效果",
+      desc: "利用 X4 360 鏡頭能同時拍下前後的特性。在剪輯時將畫面上下分屏，上面看前方路況，下面看你的駕駛反應。",
+      angle: "🎥 360 後期取景：輸出兩次影片（一次朝前、一次朝自己），在剪片 App 內疊加成上下分屏。"
     }
   ];
 
-  // 隨機抽取靈感
-  function generateIdea() {
-    const display = document.getElementById('idea-display');
-    const randomIdea = vlogIdeas[Math.floor(Math.random() * vlogIdeas.length)];
+  let lastIndex = -1;
+
+  function rollIdea() {
+    const displayArea = document.getElementById('display-area');
     
-    display.innerHTML = `
-      <div class="idea-title">${randomIdea.title}</div>
-      <div class="idea-desc">${randomIdea.desc}</div>
-      <div><span class="idea-angle">${randomIdea.angle}</span></div>
-    `;
+    // 移除動畫以便重觸發
+    displayArea.classList.remove('fade-in');
     
-    // 簡單動畫效果
-    display.style.opacity = 0;
-    setTimeout(() => { display.style.opacity = 1; display.style.transition = "opacity 0.3s"; }, 50);
+    // 加入震動特效模擬扭蛋
+    displayArea.classList.add('shake');
+    
+    // 確保不會連續抽到同一個
+    let randomIndex;
+    do {
+      randomIndex = Math.floor(Math.random() * ideas.length);
+    } while (randomIndex === lastIndex && ideas.length > 1);
+    lastIndex = randomIndex;
+    
+    const idea = ideas[randomIndex];
+    const tagsHtml = idea.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
+
+    setTimeout(() => {
+      displayArea.classList.remove('shake');
+      
+      // 更新內容並加入淡入特效
+      displayArea.innerHTML = `
+        <div class="tags">${tagsHtml}</div>
+        <div class="idea-title">${idea.title}</div>
+        <div class="idea-desc">${idea.desc}</div>
+        <div class="idea-angle">
+          <div>${idea.angle}</div>
+        </div>
+      `;
+      displayArea.classList.add('fade-in');
+    }, 400); // 震動 0.4 秒後出結果
   }
 </script>
 
